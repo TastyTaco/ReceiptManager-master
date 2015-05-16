@@ -70,7 +70,10 @@ public class HomeActivity extends Activity {
         final ExpandableListAdapter listViewAdapter = new ExpandableListAdapter (this, groupList, receiptsCollection);
         expListView.setAdapter(listViewAdapter);
 
-        /*MAKING CHANGES TO TEST GIT*/
+        /*MAKING CHANGES TO TEST GIT
+        *
+        *
+        * TEST*/
 
     }
 
