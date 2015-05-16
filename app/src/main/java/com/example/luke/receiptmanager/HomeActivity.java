@@ -23,7 +23,6 @@ import java.util.ListIterator;
 import java.util.Map;
 
 
-
 public class HomeActivity extends Activity {
 
     List<String> groupList;
