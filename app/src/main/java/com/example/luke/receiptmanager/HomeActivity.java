@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -33,7 +34,11 @@ public class HomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_home);
+
+
 
         Button btnReceiptView = (Button)findViewById(R.id.button);
         btnReceiptView.setOnClickListener(new View.OnClickListener() {
@@ -66,15 +71,25 @@ public class HomeActivity extends Activity {
 
         createCollection();
 
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels;
+
+
         ExpandableListView expListView = (ExpandableListView)findViewById(R.id.elvMainList);
         final ExpandableListAdapter listViewAdapter = new ExpandableListAdapter (this, groupList, receiptsCollection);
         expListView.setAdapter(listViewAdapter);
 
-        /*MAKING CHANGES TO TEST GIT
-        *
-        *
-        * TEST*/
+        expListView.setIndicatorBoundsRelative(width - GetPixelFromDips(80), width - GetPixelFromDips(10));
 
+
+    }
+
+    public int GetPixelFromDips(float pixels) {
+        // Get the screen's density scale
+        final float scale = getResources().getDisplayMetrics().density;
+        // Convert the dps to pixels, based on density scale
+        return (int) (pixels * scale + 0.5f);
     }
 
     @Override

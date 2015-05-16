@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="65dp">
 
     <TextView
         android:id="@+id/txtCategoryTitle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="fill_parent"
+        android:paddingTop="5dp"
+        android:background="#2196F3"
+        android:layout_height="30dp"
+        android:textColor="#ffffff"
+        android:paddingLeft="5dp"
+        />
 </LinearLayout>

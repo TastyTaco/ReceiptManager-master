@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:paddingRight="10dp"
+    android:paddingLeft="10dp">
 
     <TextView
         android:id="@+id/txtReceiptTitle"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="25px" />
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:paddingLeft="20dp"
+        android:textColor="#727272"
+        android:textSize="5pt"
+        />
     <TextView
         android:id="@+id/txtReceiptPrice"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="fill_parent"
+        android:layout_height="25dp"
+        android:textColor="#727272"
+        android:textSize="5pt"
+        />
 
     <ImageView
         android:id="@+id/imgReceiptImage"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>
