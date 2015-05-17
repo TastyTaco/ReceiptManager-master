@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">ReceiptManager</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_add_receipt">Add Receipt</string>
+    <string name="addReceiptTitle">Title:</string>
+    <string name="addReceiptCategory">Category:</string>
+    <string name="addReceiptMoneySpent">Amount Spent:</string>
+    <string name="addReceiptBtn">Add Receipt</string>
+
+    <string-array name="listCategories">
+        <item>Groceries</item>
+        <item>Petrol</item>
+        <item>Take aways</item>
+        <item>Entertainment</item>
+        <item>Phone bill</item>
+    </string-array>
+</resources>
