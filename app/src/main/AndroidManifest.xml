@@ -41,6 +41,12 @@
         <activity
             android:name=".LogOn"
             android:label="@string/title_activity_log_on" >
+            android:parentActivityName=".HomeActivity" >
+        </activity>
+        <activity
+            android:name=".CreateAccount"
+            android:label="Create Account" >
+            android:parentActivityName=".HomeActivity" >
         </activity>
     </application>
 

@@ -61,29 +61,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Register"
-        android:id="@+id/btnRegister"
-        android:layout_marginLeft="22dp"
-        android:layout_marginStart="22dp"
-        android:background="#8BC34A"
-        android:textColor="#ffffff"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/textView5"
-        android:layout_alignStart="@+id/textView5" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Log in"
         android:id="@+id/btnLogIn"
         android:background="#8BC34A"
         android:textColor="#ffffff"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:layout_alignTop="@+id/btnRegister"
-        android:layout_alignRight="@+id/txtPassword"
-        android:layout_alignEnd="@+id/txtPassword" />
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

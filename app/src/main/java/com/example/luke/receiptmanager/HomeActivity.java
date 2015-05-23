@@ -57,6 +57,24 @@ public class HomeActivity extends Activity {
             }
         });
 
+        Button btnRegisterHome = (Button)findViewById(R.id.btnRegisterHome);
+        btnRegisterHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, CreateAccount.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        Button btnLogOn = (Button)findViewById(R.id.btnLogOn);
+        btnLogOn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, LogOn.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
         receiptManager = new ReceiptManager(getApplicationContext());
         /*receiptManager.loadReceipts();
         ArrayList<Receipt> receipts = receiptManager.getReciepts();
