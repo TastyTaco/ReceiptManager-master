@@ -9,6 +9,7 @@
     <string name="addReceiptMoneySpent">Amount Spent:</string>
     <string name="addReceiptBtn">Add Receipt</string>
     <string name="title_activity_add_categories">Add Categories</string>
+    <string name="title_activity_log_on">LogOn</string>
 
     <!--<string-array name="listCategories">
         <item>Groceries</item>

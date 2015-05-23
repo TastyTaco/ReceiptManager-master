@@ -38,6 +38,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.luke.receiptmanager.HomeActivity" />
         </activity>
+        <activity
+            android:name=".LogOn"
+            android:label="@string/title_activity_log_on" >
+        </activity>
     </application>
 
 </manifest>
