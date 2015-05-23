@@ -8,12 +8,13 @@
     <string name="addReceiptCategory">Category:</string>
     <string name="addReceiptMoneySpent">Amount Spent:</string>
     <string name="addReceiptBtn">Add Receipt</string>
+    <string name="title_activity_add_categories">Add Categories</string>
 
-    <string-array name="listCategories">
+    <!--<string-array name="listCategories">
         <item>Groceries</item>
         <item>Petrol</item>
         <item>Take aways</item>
         <item>Entertainment</item>
         <item>Phone bill</item>
-    </string-array>
+    </string-array>-->
 </resources>

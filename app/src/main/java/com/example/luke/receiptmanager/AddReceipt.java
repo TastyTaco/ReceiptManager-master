@@ -5,14 +5,10 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Address;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,6 +19,7 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -32,12 +29,15 @@ public class AddReceipt extends Activity {
     File mPhotoFile = null;
     Uri mPhotoFileUri;
 
+    ArrayList<String> categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_receipt);
 
+        Bundle extras = getIntent().getExtras();
+        categories = extras.getStringArrayList("Categories");
 
         setupCategorySpinner();
         setup();
@@ -57,12 +57,12 @@ public class AddReceipt extends Activity {
 
     void setupCategorySpinner() {
         Spinner categorySpinner = (Spinner)findViewById(R.id.spnCategory);
-        Resources res = getResources();
-        String[] tCategories = res.getStringArray(R.array.listCategories);
+        //Resources res = getResources();
+        //String[] tCategories = res.getStringArray(R.array.listCategories);
 
-        ArrayAdapter<String> categories = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, tCategories);
+        ArrayAdapter<String> categoriesArrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, categories);
 
-        categorySpinner.setAdapter(categories);
+        categorySpinner.setAdapter(categoriesArrayAdapter);
     }
 
     class addReceiptButton implements View.OnClickListener {
@@ -79,13 +79,20 @@ public class AddReceipt extends Activity {
             String category = spnCategory.getSelectedItem().toString();
 
             if (mPhotoFile != null && title != null && title != "" && amountSpent != null && amountSpent != "" && category != null){
-                ReceiptManager receiptManager = new ReceiptManager(getApplicationContext());
-                receiptManager.AddReceipt(title, category, mPhotoFile, amountSpent);
-                receiptManager.SaveReceipts();
+                //ReceiptManager receiptManager = new ReceiptManager(getApplicationContext());
+                //receiptManager.addReceipt(title, category, mPhotoFile, amountSpent);
+
+
+                Intent intent = new Intent();
+                intent.putExtra("Title", title);
+                intent.putExtra("AmountSpent", amountSpent);
+                intent.putExtra("Category", category);
+                intent.putExtra("FileURI", mPhotoFileUri.getPath());
+
+                setResult(RESULT_OK, intent);
+                finish();
             }
 
-            Intent homeIntent = new Intent(AddReceipt.this, HomeActivity.class);
-            startActivity(homeIntent);
         }
     }
 

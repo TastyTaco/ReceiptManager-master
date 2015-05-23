@@ -1,6 +1,7 @@
 package com.example.luke.receiptmanager;
 
-import java.io.File;
+import android.net.Uri;
+
 
 /**
  * Created by Logan Mabbett on 16/05/2015.
@@ -9,9 +10,9 @@ public class Receipt {
     String Title;
     String Category;
     String AmountSpent;
-    File Photo;
+    Uri Photo;
 
-    public Receipt(String Title, String Category, File Photo, String AmountSpent) {
+    public Receipt(String Title, String Category, Uri Photo, String AmountSpent) {
         this.Title = Title;
         this.Category = Category;
         this.Photo = Photo;

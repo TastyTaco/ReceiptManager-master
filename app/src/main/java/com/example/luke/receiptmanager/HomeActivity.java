@@ -3,24 +3,20 @@ package com.example.luke.receiptmanager;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 
@@ -35,23 +31,32 @@ public class HomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_home);
-
-
 
         Button btnReceiptView = (Button)findViewById(R.id.button);
         btnReceiptView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent tIntent = new Intent(HomeActivity.this, AddReceipt.class);
-                startActivity(tIntent);
+                Intent intent = new Intent(HomeActivity.this, AddReceipt.class);
+                intent.putExtra("Categories", receiptManager.getCategories());
+
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        Button btnAddCategory = (Button)findViewById(R.id.btnAddCategory);
+        btnAddCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, AddCategories.class);
+                intent.putExtra("Categories", receiptManager.getCategories());
+                startActivityForResult(intent, 1);
             }
         });
 
         receiptManager = new ReceiptManager(getApplicationContext());
         /*receiptManager.loadReceipts();
-        ArrayList<Receipt> receipts = receiptManager.GetReciepts();
+        ArrayList<Receipt> receipts = receiptManager.getReciepts();
 
 
         if (receipts != null && receipts.size() > 0) {
@@ -60,14 +65,22 @@ public class HomeActivity extends Activity {
         }*/
 
         //get category array from strings.xml
-        Resources res = getResources();
-        String[] categories = res.getStringArray(R.array.listCategories);
-        groupList = new ArrayList<String>();
+        //Resources res = getResources();
+        //String[] categories = res.getStringArray(R.array.listCategories);
+        /*groupList = new ArrayList<String>();
         groupList.add("Petrol");
         groupList.add("Groceries");
         groupList.add("Entertainment");
         groupList.add("Phone bill");
         groupList.add("Take aways");
+*/
+
+        setupExpandingListView();
+
+    }
+
+    void setupExpandingListView() {
+        groupList = receiptManager.getCategories();
 
         createCollection();
 
@@ -81,8 +94,6 @@ public class HomeActivity extends Activity {
         expListView.setAdapter(listViewAdapter);
 
         expListView.setIndicatorBoundsRelative(width - GetPixelFromDips(80), width - GetPixelFromDips(10));
-
-
     }
 
     public int GetPixelFromDips(float pixels) {
@@ -117,11 +128,20 @@ public class HomeActivity extends Activity {
 
     private void createCollection() {
         receiptsCollection = new LinkedHashMap<String, ArrayList<Receipt>>();
-        ArrayList<Receipt> receipts = new ArrayList<Receipt>();
-        receiptManager.loadReceipts();
-        receipts = receiptManager.GetReciepts();
+        //ArrayList<Receipt> receipts = new ArrayList<Receipt>();
+        //receipts = receiptManager.getReciepts();
+
+        ArrayList<String> categories = new ArrayList<String>();
+        categories = receiptManager.getCategories();
+
+        for (String category : categories) {
+            ArrayList<Receipt> categorisedReceipts = receiptManager.getReceipts(category);
+            receiptsCollection.put(category, categorisedReceipts);
+        }
 
 
+
+        /*
         ArrayList<Receipt> petrolReceipts = new ArrayList<>();
         ArrayList<Receipt> groceryReceipts = new ArrayList<>();
         ArrayList<Receipt> entertainmentReceipts = new ArrayList<>();
@@ -156,6 +176,30 @@ public class HomeActivity extends Activity {
         receiptsCollection.put("Entertainment", entertainmentReceipts);
         receiptsCollection.put("Phone bill", phoneBillReceipts);
         receiptsCollection.put("Take aways", petrolReceipts);
+        */
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) return;
+        if (requestCode == 0) {
+            Bundle extras = data.getExtras();
+            String title = extras.getString("Title");
+            String amountSpent = extras.getString("AmountSpent");
+            String category = extras.getString("Category");
+            Uri fileURI = Uri.parse(extras.getString("FileURI"));
+
+            receiptManager.addReceipt(title,category, fileURI, amountSpent);
+
+
+        } else if (requestCode == 1) {
+            String category = data.getStringExtra("Category");
+            if (category != null && category != "") {
+                receiptManager.addCategory(category);
+                setupExpandingListView();
+            }
+        }
     }
 
 }
