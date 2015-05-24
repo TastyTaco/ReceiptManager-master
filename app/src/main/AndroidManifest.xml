@@ -48,6 +48,10 @@
             android:label="Create Account" >
             android:parentActivityName=".HomeActivity" >
         </activity>
+        <activity
+            android:name=".WelcomeActivity"
+            android:label="@string/title_activity_welcome" >
+        </activity>
     </application>
 
 </manifest>

@@ -2,17 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B6B6B6">
+    android:background="#2196F3">
 
     <EditText
         android:layout_width="215dp"
         android:layout_height="wrap_content"
         android:id="@+id/txtEmail"
         android:layout_marginTop="28dp"
-        android:textColor="#212121"
+        android:textColor="#ffffff"
         android:layout_toRightOf="@+id/textView4"
         android:layout_toEndOf="@+id/textView4"
-        android:paddingTop="120dp" />
+        android:paddingTop="100dp"
+        android:textColorHighlight="#ffffff"
+        android:textColorHint="#ffffff"
+        android:textColorLink="#ffffff" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -21,10 +24,13 @@
         android:ems="10"
         android:id="@+id/txtPassword"
         android:layout_marginTop="19dp"
-        android:textColor="#212121"
+        android:textColor="#ffffff"
         android:layout_below="@+id/txtEmail"
         android:layout_alignLeft="@+id/txtEmail"
-        android:layout_alignStart="@+id/txtEmail" />
+        android:layout_alignStart="@+id/txtEmail"
+        android:textColorHighlight="#ffffff"
+        android:textColorHint="#ffffff"
+        android:textColorLink="#ffffff" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,11 +38,15 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Email address:"
         android:id="@+id/textView4"
-        android:textColor="#212121"
+        android:textColor="#ffffff"
         android:layout_alignBaseline="@+id/txtEmail"
         android:layout_alignBottom="@+id/txtEmail"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColorHighlight="#ffffff"
+        android:textColorHint="#ffffff"
+        android:textColorLink="#ffffff"
+        android:paddingLeft="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -44,11 +54,14 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Password:"
         android:id="@+id/textView5"
-        android:textColor="#212121"
+        android:textColor="#ffffff"
         android:layout_alignBaseline="@+id/txtPassword"
         android:layout_alignBottom="@+id/txtPassword"
         android:layout_toLeftOf="@+id/txtPassword"
-        android:layout_toStartOf="@+id/txtPassword" />
+        android:layout_toStartOf="@+id/txtPassword"
+        android:textColorHighlight="#ffffff"
+        android:textColorHint="#ffffff"
+        android:textColorLink="#ffffff" />
 
     <Button
         android:layout_width="wrap_content"
@@ -61,7 +74,21 @@
         android:paddingRight="15dp"
         android:layout_below="@+id/txtPassword"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp" />
+        android:layout_marginTop="45dp"
+        android:textColorHighlight="#ffffff"
+        android:textColorHint="#ffffff"
+        android:textColorLink="#ffffff" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Please register below"
+        android:id="@+id/textView9"
+        android:layout_alignTop="@+id/txtEmail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="28dp"
+        android:textColor="#ffffff" />
 
 
 </RelativeLayout>
