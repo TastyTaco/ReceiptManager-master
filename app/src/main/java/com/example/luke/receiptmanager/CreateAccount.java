@@ -18,14 +18,17 @@ import java.util.Map;
  */
 public class CreateAccount extends Activity {
 
-    Firebase ref;
+    //Firebase ref;
+    FirebaseWrapper firebaseWrapper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_account);
-        Firebase.setAndroidContext(this);
 
-        ref = new Firebase("https://reciptmanger.firebaseio.com");
+        firebaseWrapper = new FirebaseWrapper(getApplicationContext());
+        //Firebase.setAndroidContext(this);
+
+        //ref = new Firebase("https://reciptmanger.firebaseio.com");
         Button btnCreateAccount = (Button)findViewById(R.id.btnRegister);
 
         final TextView txtEmailAddress = (TextView)findViewById(R.id.txtEmail);
@@ -40,7 +43,8 @@ public class CreateAccount extends Activity {
     }
 
     void CreateUser(String emailAddress, String password){
-        ref.createUser(emailAddress, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
+        Firebase firebase = firebaseWrapper.firebase;
+        firebase.createUser(emailAddress, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 System.out.println("Successfully created user account with uid: " + result.get("uid"));
