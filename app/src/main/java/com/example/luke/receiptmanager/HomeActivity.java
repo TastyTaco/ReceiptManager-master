@@ -67,6 +67,7 @@ public class HomeActivity extends Activity {
             }
         });
 
+
         receiptManager = new ReceiptManager(getApplicationContext());
 
         setupExpandingListView();

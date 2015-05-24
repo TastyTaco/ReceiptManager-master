@@ -1,14 +1,19 @@
 package com.example.luke.receiptmanager;
 
 import android.app.Activity;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +61,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         //get the current receipt
-        Receipt receipt = (Receipt)getChild(groupPosition, childPosition);
+        final Receipt receipt = (Receipt)getChild(groupPosition, childPosition);
         //create a layoutinflater
         LayoutInflater layoutInflater = context.getLayoutInflater();
 
@@ -69,12 +74,23 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         //get the textview for the receipts title
         TextView receiptTitle = (TextView)convertView.findViewById(R.id.txtReceiptTitle);
+        //get the textview for the receipts price
+        TextView receiptPrice = (TextView)convertView.findViewById(R.id.txtReceiptPrice);
         //get the imageview for the receipt
         ImageView receiptImage = (ImageView)convertView.findViewById(R.id.imgReceiptImage);
 
         //set the textview to the title of the receipt
         if(receiptTitle != null) {
             receiptTitle.setText(receipt.Title);
+        }
+
+        if(receiptPrice != null) {
+            receiptPrice.setText("$" + receipt.AmountSpent);
+        }
+
+        if(receiptImage != null){
+            byte[] imageBytes = Base64.decode(receipt.Photo, 0);
+            receiptImage.setImageBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
         }
         //set the imageView for the receipt
         //receiptImage.setImageBitmap();
