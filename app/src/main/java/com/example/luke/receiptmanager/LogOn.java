@@ -44,6 +44,8 @@ public class LogOn extends Activity {
             @Override
             public void onAuthenticated(AuthData authData) {
                 System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
+                firebaseWrapper.SetUserId(authData.getUid());
+
                 Intent intent = new Intent(LogOn.this, HomeActivity.class);
                 startActivityForResult(intent, 0);
             }

@@ -16,6 +16,8 @@ public class FirebaseWrapper {
     static FirebaseWrapper firebaseWrapper;
     Firebase firebase;
 
+    public String userId;
+
     private String loadedData;
 
     private FirebaseWrapper(Context context) {
@@ -55,6 +57,11 @@ public class FirebaseWrapper {
         usersFileLocation.removeEventListener(valueEventListener);
 
         return loadedData;
+    }
+
+    public void SetUserId(String userId)
+    {
+       this.userId = userId;
     }
 
     //https://www.firebase.com/docs/android/guide/saving-data.html

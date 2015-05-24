@@ -46,6 +46,8 @@ public class CreateAccount extends Activity {
             @Override
             public void onSuccess(Map<String, Object> result) {
                 System.out.println("Successfully created user account with uid: " + result.get("uid"));
+                firebaseWrapper.SetUserId(result.get("uid").toString());
+
                 Intent intent = new Intent(CreateAccount.this, HomeActivity.class);
                 startActivityForResult(intent, 0);
             }
