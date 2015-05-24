@@ -3,6 +3,7 @@ package com.example.luke.receiptmanager;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -26,6 +27,7 @@ public class ReceiptManager {
     private String localStorageRecieptsJSON = "ReceiptManagerJSON";
     private Context context;
 
+    private int maxId = 0;
 
     private ArrayList<Receipt> receipts = new ArrayList<Receipt>();
     private ArrayList<String> categories = new ArrayList<String>();
@@ -93,10 +95,15 @@ public class ReceiptManager {
         } catch (JSONException jsonEx) {
             jsonEx.printStackTrace();
         }
-        if (jsonReceipts != null) {
 
+        if (jsonReceipts != null) {
             receipts = new Gson().fromJson(jsonReceipts.toString(), new TypeToken<ArrayList<Receipt>>() {
             }.getType());
+
+            for (Receipt receipt : receipts) {
+                receipt.Id = maxId;
+                maxId++;
+            }
         }
 
         if (jsonCategories != null) {
@@ -113,8 +120,9 @@ public class ReceiptManager {
     }
 
     private void save() {
-        String categoryStr = new Gson().toJson(categories);
-        String receiptsStr = new Gson().toJson(receipts);
+        Gson gson = new GsonBuilder().addSerializationExclusionStrategy(new Receipt.ReceiptExclusionStrategy()).create();
+        String categoryStr = gson.toJson(categories);
+        String receiptsStr = gson.toJson(receipts);
 
         JSONObject root = new JSONObject();
         try {
@@ -137,9 +145,10 @@ public class ReceiptManager {
 
     }
 
-    public void addReceipt(String Title, String Category, String Photo, String AmountSpent) {
-        Receipt receipt = new Receipt(Title, Category, Photo, AmountSpent);
+    public void addReceipt(String title, String category, String photo, String amountSpent) {
+        Receipt receipt = new Receipt(maxId, title, category, photo, amountSpent);
         receipts.add(receipt);
+        maxId++;
         save();
     }
 
@@ -147,6 +156,17 @@ public class ReceiptManager {
         categories.add(category);
         Collections.sort(categories);
         save();
+    }
+
+    public void deleteReceipt(int id) {
+        if (receipts == null) return;
+
+        for (int ii = 0; ii < receipts.size(); ii++) {
+            if (receipts.get(ii).Id == id) {
+                receipts.remove(ii);
+                break;
+            }
+        }
     }
 
 }
