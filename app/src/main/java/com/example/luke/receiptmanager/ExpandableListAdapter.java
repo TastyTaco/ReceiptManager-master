@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -59,7 +60,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         //get the current receipt
         final Receipt receipt = (Receipt)getChild(groupPosition, childPosition);
         //create a layoutinflater
@@ -94,6 +95,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
         //set the imageView for the receipt
         //receiptImage.setImageBitmap();
+
+        Button deleteButton = (Button)convertView.findViewById(R.id.btnDelete);
+
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReceiptManager receiptManager = new ReceiptManager(context);
+                receiptManager.deleteReceipt(receipt.Id);
+
+                ArrayList<Receipt> child = listItems.get(listCategories.get(groupPosition));
+                child.remove(childPosition);
+                notifyDataSetChanged();
+            }
+        });
 
         return convertView;
     }
