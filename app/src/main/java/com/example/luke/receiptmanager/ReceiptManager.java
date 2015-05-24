@@ -32,8 +32,11 @@ public class ReceiptManager {
     private ArrayList<Receipt> receipts = new ArrayList<Receipt>();
     private ArrayList<String> categories = new ArrayList<String>();
 
+    FirebaseWrapper firebaseWrapper;
+
     public ReceiptManager( Context context ) {
         this.context = context;
+        firebaseWrapper = FirebaseWrapper.getInstance(context);
         load();
     }
 
@@ -132,9 +135,11 @@ public class ReceiptManager {
 
         }
 
+        String jsonStr = root.toString();
+
         try {
             FileOutputStream fileOutputStream = context.openFileOutput(localStorageRecieptsJSON, context.MODE_PRIVATE);
-            fileOutputStream.write(root.toString().getBytes());
+            fileOutputStream.write(jsonStr.getBytes());
             fileOutputStream.close();
 
         } catch (FileNotFoundException fnfEx) {

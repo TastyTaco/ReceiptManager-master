@@ -11,16 +11,23 @@ import com.firebase.client.ValueEventListener;
  * Created by Logan Mabbett on 15/05/2015.
  */
 public class FirebaseWrapper {
-
     final String firebaseUrl = "https://reciptmanger.firebaseio.com/";
 
+    static FirebaseWrapper firebaseWrapper;
     Firebase firebase;
 
     private String loadedData;
 
-    public FirebaseWrapper(Context context) {
+    private FirebaseWrapper(Context context) {
         Firebase.setAndroidContext(context);
         firebase = new Firebase(firebaseUrl);
+    }
+
+    public static FirebaseWrapper getInstance(Context context) {
+        if (firebaseWrapper == null)
+            firebaseWrapper = new FirebaseWrapper(context);
+
+        return firebaseWrapper;
     }
 
     public void saveToFirebase(String userName, String jsonString) {

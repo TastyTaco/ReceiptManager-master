@@ -25,10 +25,8 @@ public class CreateAccount extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_account);
 
-        firebaseWrapper = new FirebaseWrapper(getApplicationContext());
-        //Firebase.setAndroidContext(this);
+        firebaseWrapper = FirebaseWrapper.getInstance(getApplicationContext());
 
-        //ref = new Firebase("https://reciptmanger.firebaseio.com");
         Button btnCreateAccount = (Button)findViewById(R.id.btnRegister);
 
         final TextView txtEmailAddress = (TextView)findViewById(R.id.txtEmail);

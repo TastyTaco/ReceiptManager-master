@@ -21,10 +21,8 @@ public class LogOn extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_on);
 
-        firebaseWrapper = new FirebaseWrapper(getApplicationContext());
-        //Firebase.setAndroidContext(this);
+        firebaseWrapper = FirebaseWrapper.getInstance(getApplicationContext());
 
-        //ref = new Firebase("https://reciptmanger.firebaseio.com");
         Button btnLogOn = (Button)findViewById(R.id.btnLogIn);
 
         final TextView txtEmailAddress = (TextView)findViewById(R.id.txtEmail);
