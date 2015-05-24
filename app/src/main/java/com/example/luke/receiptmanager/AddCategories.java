@@ -1,5 +1,6 @@
 package com.example.luke.receiptmanager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class AddCategories extends ActionBarActivity {
+public class AddCategories extends Activity {
 
     ArrayList<String> categories;
 

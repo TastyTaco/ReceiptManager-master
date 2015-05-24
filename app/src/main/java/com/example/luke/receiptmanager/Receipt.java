@@ -10,9 +10,9 @@ public class Receipt {
     String Title;
     String Category;
     String AmountSpent;
-    Uri Photo;
+    String Photo; //Base64 encoded photo
 
-    public Receipt(String Title, String Category, Uri Photo, String AmountSpent) {
+    public Receipt(String Title, String Category, String Photo, String AmountSpent) {
         this.Title = Title;
         this.Category = Category;
         this.Photo = Photo;

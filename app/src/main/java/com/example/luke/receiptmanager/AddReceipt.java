@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ public class AddReceipt extends Activity {
     String mPhotoFileName = "";
     File mPhotoFile = null;
     Uri mPhotoFileUri;
+    //base64 encoded image file.
+    String imageFile;
 
     ArrayList<String> categories;
 
@@ -87,7 +91,18 @@ public class AddReceipt extends Activity {
                 intent.putExtra("Title", title);
                 intent.putExtra("AmountSpent", amountSpent);
                 intent.putExtra("Category", category);
-                intent.putExtra("FileURI", mPhotoFileUri.getPath());
+
+                String realFilePath = mPhotoFile.getPath();
+
+                Bitmap userPhotoBitmap = BitmapFactory.decodeFile(realFilePath);
+
+                ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+                userPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteOutputStream);
+                userPhotoBitmap.recycle();
+                byte[] byteArray = byteOutputStream.toByteArray();
+                String byteImage = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+                intent.putExtra("Photo", byteImage);
 
                 setResult(RESULT_OK, intent);
                 finish();
@@ -107,7 +122,7 @@ public class AddReceipt extends Activity {
             Intent imageCaptureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             imageCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mPhotoFileUri);
 
-            startActivityForResult(imageCaptureIntent, 1);
+            startActivityForResult(imageCaptureIntent, 3);
         }
     }
 
@@ -133,7 +148,7 @@ public class AddReceipt extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Camera intent request
-        if (requestCode == 1) {
+        if (requestCode == 3) {
             if (resultCode == RESULT_OK) {
 
                 String realFilePath = mPhotoFile.getPath();
