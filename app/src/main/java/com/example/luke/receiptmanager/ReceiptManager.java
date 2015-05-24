@@ -167,6 +167,8 @@ public class ReceiptManager {
                 break;
             }
         }
+
+        save();
     }
 
 }
