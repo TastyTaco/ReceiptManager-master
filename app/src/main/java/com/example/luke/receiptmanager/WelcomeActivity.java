@@ -2,10 +2,7 @@ package com.example.luke.receiptmanager;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,7 +19,7 @@ public class WelcomeActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(WelcomeActivity.this, LogOn.class);
-                startActivityForResult(intent, 0);
+                startActivity(intent);
             }
         });
 
@@ -31,7 +28,7 @@ public class WelcomeActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(WelcomeActivity.this, CreateAccount.class);
-                startActivityForResult(intent, 1);
+                startActivity(intent);
             }
         });
 
@@ -40,11 +37,12 @@ public class WelcomeActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
-                startActivityForResult(intent, 2);
+                startActivity(intent);
             }
         });
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -66,4 +64,5 @@ public class WelcomeActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+    */
 }

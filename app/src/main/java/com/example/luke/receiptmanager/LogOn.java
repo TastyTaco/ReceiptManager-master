@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -15,7 +16,6 @@ import com.firebase.client.FirebaseError;
 public class LogOn extends Activity {
 
     FirebaseWrapper firebaseWrapper;
-    //Firebase ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,36 +24,40 @@ public class LogOn extends Activity {
         firebaseWrapper = FirebaseWrapper.getInstance(getApplicationContext());
 
         Button btnLogOn = (Button)findViewById(R.id.btnLogIn);
-
-        final TextView txtEmailAddress = (TextView)findViewById(R.id.txtEmail);
-        final TextView txtPassword = (TextView)findViewById(R.id.txtPassword);
-
         btnLogOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LogOn(txtEmailAddress.getText().toString(), txtPassword.getText().toString());
+                TextView txtEmailAddress = (TextView)findViewById(R.id.txtEmail);
+                TextView txtPassword = (TextView)findViewById(R.id.txtPassword);
+
+                String emailAddress = txtEmailAddress.getText().toString();
+                String password =  txtPassword.getText().toString();
+
+                LogOn(emailAddress, password);
             }
         });
     }
 
 
     void LogOn(String emailAddress, String password){
+        LoginEvent loginEvent = new LoginEvent();
+        firebaseWrapper.authWithPassword(emailAddress, password, loginEvent);
+    }
 
-        Firebase ref = firebaseWrapper.firebase; //new Firebase("https://reciptmanger.firebaseio.com");
-        ref.authWithPassword(emailAddress, password, new Firebase.AuthResultHandler() {
-            @Override
-            public void onAuthenticated(AuthData authData) {
-                System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
-                firebaseWrapper.SetUserId(authData.getUid());
+    class LoginEvent implements Firebase.AuthResultHandler {
+        @Override
+        public void onAuthenticated(AuthData authData) {
+            System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
+            firebaseWrapper.setUserId(authData.getUid());
 
-                Intent intent = new Intent(LogOn.this, HomeActivity.class);
-                startActivityForResult(intent, 0);
-            }
+            Intent intent = new Intent(LogOn.this, HomeActivity.class);
+            startActivity(intent);
+        }
 
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                // there was an error
-            }
-        });
+        @Override
+        public void onAuthenticationError(FirebaseError firebaseError) {
+            // there was an error
+            Toast.makeText(getApplicationContext(), "Failed to Authenticate", Toast.LENGTH_LONG).show();
+        }
     }
 }

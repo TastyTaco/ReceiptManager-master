@@ -7,16 +7,18 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.Map;
+
 /**
  * Created by Logan Mabbett on 15/05/2015.
  */
 public class FirebaseWrapper {
     final String firebaseUrl = "https://reciptmanger.firebaseio.com/";
 
-    static FirebaseWrapper firebaseWrapper;
-    Firebase firebase;
+    private static FirebaseWrapper firebaseWrapper;
+    private Firebase firebase;
 
-    public String userId;
+    private String userId;
 
     private String loadedData;
 
@@ -32,14 +34,17 @@ public class FirebaseWrapper {
         return firebaseWrapper;
     }
 
-    public void saveToFirebase(String userName, String jsonString) {
-        Firebase usersFileLocation = firebase.child("Users").child(userName);
+    public void saveToFirebase(String jsonString) {
+        if (userId == null) return;
+        Firebase usersFileLocation = firebase.child("Users").child(userId);
         Firebase updatedUsersFileLocation = usersFileLocation.push();
         updatedUsersFileLocation.setValue(jsonString);
     }
 
-    public String loadFromFirebase(String userName) {
-        Firebase usersFileLocation = firebase.child("Users").child(userName);
+    public String loadFromFirebase() {
+        if (userId == null) return "";
+
+        Firebase usersFileLocation = firebase.child("Users").child(userId);
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -59,9 +64,19 @@ public class FirebaseWrapper {
         return loadedData;
     }
 
-    public void SetUserId(String userId)
+    public void setUserId(String userId)
     {
        this.userId = userId;
+    }
+
+    public String getUserId() { return userId; }
+
+    public void createUser(String emailAddress, String password, Firebase.ValueResultHandler<Map<String, Object>> resultHandler) {
+        firebase.createUser(emailAddress, password, resultHandler);
+    }
+
+    public void authWithPassword(String emailAddress, String password, Firebase.AuthResultHandler authResultHandler) {
+        firebase.authWithPassword(emailAddress, password, authResultHandler);
     }
 
     //https://www.firebase.com/docs/android/guide/saving-data.html

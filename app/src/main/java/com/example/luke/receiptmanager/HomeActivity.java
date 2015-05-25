@@ -11,8 +11,6 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -58,7 +56,7 @@ public class HomeActivity extends Activity {
 
         FirebaseWrapper firebaseWrapper = FirebaseWrapper.getInstance(getApplicationContext());
 
-        Toast.makeText(getApplicationContext(), firebaseWrapper.userId, Toast.LENGTH_LONG ).show();
+        Toast.makeText(getApplicationContext(), firebaseWrapper.getUserId(), Toast.LENGTH_LONG ).show();
 
     }
 
