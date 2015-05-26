@@ -31,7 +31,7 @@ public class ReceiptManager {
     private ArrayList<Receipt> receipts = new ArrayList<Receipt>();
     private ArrayList<String> categories = new ArrayList<String>();
 
-    FirebaseWrapper firebaseWrapper;
+    private FirebaseWrapper firebaseWrapper;
 
     public ReceiptManager( Context context ) {
         this.context = context;
