@@ -29,8 +29,6 @@ public class AddReceipt extends Activity {
     String mPhotoFileName = "";
     File mPhotoFile = null;
     Uri mPhotoFileUri;
-    //base64 encoded image file.
-    String imageFile;
 
     ArrayList<String> categories;
 
@@ -60,8 +58,6 @@ public class AddReceipt extends Activity {
 
     void setupCategorySpinner() {
         Spinner categorySpinner = (Spinner)findViewById(R.id.spnCategory);
-        //Resources res = getResources();
-        //String[] tCategories = res.getStringArray(R.array.listCategories);
 
         ArrayAdapter<String> categoriesArrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, categories);
 
@@ -82,10 +78,6 @@ public class AddReceipt extends Activity {
             String category = spnCategory.getSelectedItem().toString();
 
             if (mPhotoFile != null && title != null && title != "" && amountSpent != null && amountSpent != "" && category != null){
-                //ReceiptManager receiptManager = new ReceiptManager(getApplicationContext());
-                //receiptManager.addReceipt(title, category, mPhotoFile, amountSpent);
-
-
                 Intent intent = new Intent();
                 intent.putExtra("Title", title);
                 intent.putExtra("AmountSpent", amountSpent);
@@ -161,6 +153,31 @@ public class AddReceipt extends Activity {
                 Toast.makeText(this, "No photo saved.", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save the user's current game state
+        savedInstanceState.putString("mPhotoFileName", mPhotoFileName);
+        //savedInstanceState.putParcelable("mPhotoFile", mPhotoFile);
+        savedInstanceState.putParcelable("mPhotoFileUri", mPhotoFileUri);
+        savedInstanceState.putStringArrayList("Categories", categories);
+
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        // Always call the superclass so it can restore the view hierarchy
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Restore state members from saved instance
+        mPhotoFileName = savedInstanceState.getString("mPhotoFileName");
+        //savedInstanceState.putParcelable("mPhotoFile", mPhotoFile);
+        mPhotoFileUri = savedInstanceState.getParcelable("mPhotoFileUri");
+        categories = savedInstanceState.getStringArrayList("Categories");
+        mPhotoFile = new File(mPhotoFileUri.getPath());
     }
 
     /*@Override
