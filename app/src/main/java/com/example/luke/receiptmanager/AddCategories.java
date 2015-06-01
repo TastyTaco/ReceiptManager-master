@@ -8,7 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -44,14 +47,15 @@ public class AddCategories extends AppCompatActivity {
                 EditText txtCategory = (EditText) findViewById(R.id.txtAddCategory);
 
                 String newCategory = txtCategory.getText().toString();
+                TextView validationMessage = (TextView)findViewById(R.id.txtValidationMessage);
 
-                if (newCategory == null || newCategory == "") {
-                    Toast.makeText(AddCategories.this, "Please enter a category to add", Toast.LENGTH_LONG).show();
+                if (newCategory.equals("null") || newCategory.isEmpty()) {
+                    validationMessage.setText("Please enter a category");
                     return;
                 }
 
                 if (categories.contains(newCategory)) {
-                    Toast.makeText(AddCategories.this, "Category already exists", Toast.LENGTH_LONG).show();
+                    validationMessage.setText("Category already exists");
                     return;
                 }
 

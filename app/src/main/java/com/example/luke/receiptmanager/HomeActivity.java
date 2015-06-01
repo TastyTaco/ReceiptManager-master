@@ -56,8 +56,6 @@ public class HomeActivity extends Activity {
 
         FirebaseWrapper firebaseWrapper = FirebaseWrapper.getInstance(getApplicationContext());
 
-        Toast.makeText(getApplicationContext(), firebaseWrapper.getUserId(), Toast.LENGTH_LONG ).show();
-
     }
 
     void setupExpandingListView() {

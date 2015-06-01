@@ -10,6 +10,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +111,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 ArrayList<Receipt> child = listItems.get(listCategories.get(groupPosition));
                 child.remove(childPosition);
                 notifyDataSetChanged();
+
+                Toast.makeText(context, "Receipt " + receipt.Title + " has been deleted", Toast.LENGTH_LONG ).show();
             }
         });
 
