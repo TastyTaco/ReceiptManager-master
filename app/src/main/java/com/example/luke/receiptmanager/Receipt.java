@@ -1,7 +1,6 @@
 package com.example.luke.receiptmanager;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
+import java.util.HashMap;
 
 /**
  * Created by Logan Mabbett on 16/05/2015.
@@ -14,24 +13,29 @@ public class Receipt {
     String Photo; //Base64 encoded photo
 
     public Receipt(int Id, String Title, String Category, String Photo, String AmountSpent) {
+        this.Id = Id;
         this.Title = Title;
         this.Category = Category;
         this.Photo = Photo;
         this.AmountSpent = AmountSpent;
     }
 
-    static class ReceiptExclusionStrategy implements ExclusionStrategy {
+    public Receipt(int Id, HashMap<String, String> values) {
+        this.Id = Id;
 
-        @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            //Skip serilisation of Receipt.Id
-            return (f.getDeclaringClass() == Receipt.class && f.getName().equals("id"));
-        }
-
-        @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return false;
-        }
+        this.Title = values.get("title");
+        this.Category = values.get("category");
+        this.Photo = values.get("photo");
+        this.AmountSpent = values.get("amountSpent");
     }
 
+    public HashMap<String, String> save() {
+        HashMap<String, String> mapping = new HashMap<String, String>();
+        mapping.put("title", Title);
+        mapping.put("category", Category);
+        mapping.put("amountSpent", AmountSpent);
+        mapping.put("photo", Photo);
+
+        return mapping;
+    }
 }

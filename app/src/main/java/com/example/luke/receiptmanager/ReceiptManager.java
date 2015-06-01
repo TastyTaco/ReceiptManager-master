@@ -1,20 +1,8 @@
 package com.example.luke.receiptmanager;
 
+import android.app.Activity;
 import android.content.Context;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -23,8 +11,8 @@ import java.util.Collections;
  */
 
 public class ReceiptManager {
-    private String localStorageRecieptsJSON = "ReceiptManagerJSON";
     private Context context;
+    private HomeActivity homeActivity;
 
     private int maxId = 0;
 
@@ -33,10 +21,25 @@ public class ReceiptManager {
 
     private FirebaseWrapper firebaseWrapper;
 
-    public ReceiptManager( Context context ) {
+    private static ReceiptManager receiptManager;
+
+    private ReceiptManager( Context context, HomeActivity homeActivity) {
         this.context = context;
+        this.homeActivity = homeActivity;
         firebaseWrapper = FirebaseWrapper.getInstance(context);
         load();
+    }
+
+    public static ReceiptManager getInstance(Context context, HomeActivity homeActivity){
+        if (receiptManager == null)
+            receiptManager = new ReceiptManager(context, homeActivity);
+
+        return receiptManager;
+    }
+
+    //May return null;
+    public static ReceiptManager getInstance() {
+        return receiptManager;
     }
 
     public ArrayList<Receipt> getReciepts() {
@@ -45,6 +48,31 @@ public class ReceiptManager {
 
     public ArrayList<String> getCategories() {
         return categories;
+    }
+
+    //Used when loading from firebase.
+    public void addReceipts(ArrayList<Receipt> receipts) {
+        if (receipts == null) return;
+
+        this.receipts = receipts;
+
+        if (receipts != null) {
+            for (Receipt receipt : receipts) {
+                if (receipt.Id > maxId) {
+                    maxId = receipt.Id;
+                }
+            }
+        }
+
+
+        homeActivity.setupExpandingListView();
+    }
+
+    //Used when loading from firebase.
+    public void addCategories(ArrayList<String> categories) {
+        if (categories == null) return;
+        this.categories = categories;
+        homeActivity.setupExpandingListView();
     }
 
     public ArrayList<Receipt> getReceipts(String category) {
@@ -60,106 +88,28 @@ public class ReceiptManager {
     }
 
     private void load() {
-        InputStream inputStream = null;
-        try {
-            inputStream = context.openFileInput(localStorageRecieptsJSON);
-
-        } catch (FileNotFoundException fnfEx) {
-
-        } catch (IOException ioEx) {
-
-        }
-        String receiptsStr = "";
-        if (inputStream != null) {
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            String receiveString = "";
-            StringBuilder stringBuilder = new StringBuilder();
-
-            try {
-                while ((receiveString = bufferedReader.readLine()) != null) {
-                    stringBuilder.append(receiveString);
-                }
-                inputStream.close();
-            } catch (IOException ioEx) {
-                ioEx.printStackTrace();
-            }
-            receiptsStr = stringBuilder.toString();
-        }
-
-        JSONObject root;
-        String jsonCategories = null;
-        String jsonReceipts = null;
-        try {
-            root = new JSONObject(receiptsStr);
-            jsonCategories = root.getString("Categories");
-            jsonReceipts = root.getString("Receipts");
-        } catch (JSONException jsonEx) {
-            jsonEx.printStackTrace();
-        }
-
-        if (jsonReceipts != null) {
-            receipts = new Gson().fromJson(jsonReceipts.toString(), new TypeToken<ArrayList<Receipt>>() {
-            }.getType());
-
-            for (Receipt receipt : receipts) {
-                receipt.Id = maxId;
-                maxId++;
-            }
-        }
-
-        if (jsonCategories != null) {
-            categories = new Gson().fromJson(jsonCategories.toString(), new TypeToken<ArrayList<String>>() {
-            }.getType());
-        }
-
-
-        if (receipts == null)
-            receipts = new ArrayList<Receipt>();
-
-        if (categories == null)
-            categories = new ArrayList<String>();
-    }
-
-    private void save() {
-        Gson gson = new GsonBuilder().addSerializationExclusionStrategy(new Receipt.ReceiptExclusionStrategy()).create();
-        String categoryStr = gson.toJson(categories);
-        String receiptsStr = gson.toJson(receipts);
-
-        JSONObject root = new JSONObject();
-        try {
-            root.put("Categories", categoryStr);
-            root.put("Receipts", receiptsStr);
-        } catch(JSONException jsonEx) {
-
-        }
-
-        String jsonStr = root.toString();
-        firebaseWrapper.saveToFirebase(jsonStr);
-        try {
-            FileOutputStream fileOutputStream = context.openFileOutput(localStorageRecieptsJSON, context.MODE_PRIVATE);
-            fileOutputStream.write(jsonStr.getBytes());
-            fileOutputStream.close();
-
-        } catch (FileNotFoundException fnfEx) {
-
-        }catch (IOException ioEx) {
-
-        }
-
+        firebaseWrapper.loadReceipts(this);
+        firebaseWrapper.loadCategories(this);
     }
 
     public void addReceipt(String title, String category, String photo, String amountSpent) {
         Receipt receipt = new Receipt(maxId, title, category, photo, amountSpent);
+
+        if (receipts == null)
+            receipts = new ArrayList<Receipt>();
+
         receipts.add(receipt);
         maxId++;
-        save();
+        firebaseWrapper.saveReceipts(receipts);
     }
 
     public void addCategory(String category) {
+        if (categories == null)
+            categories = new ArrayList<String>();
+
         categories.add(category);
         Collections.sort(categories);
-        save();
+        firebaseWrapper.saveCategories(categories);
     }
 
     public void deleteReceipt(int id) {
@@ -172,7 +122,7 @@ public class ReceiptManager {
             }
         }
 
-        save();
+        firebaseWrapper.saveReceipts(receipts);
     }
 
 }

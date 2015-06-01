@@ -97,7 +97,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ReceiptManager receiptManager = new ReceiptManager(context);
+                ReceiptManager receiptManager = ReceiptManager.getInstance();
                 receiptManager.deleteReceipt(receipt.Id);
 
                 ArrayList<Receipt> child = listItems.get(listCategories.get(groupPosition));

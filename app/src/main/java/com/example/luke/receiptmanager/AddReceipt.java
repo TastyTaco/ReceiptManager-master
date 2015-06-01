@@ -46,7 +46,6 @@ public class AddReceipt extends Activity {
     }
 
     void setup() {
-
         //Recipt Sumbisson.
         Button btnAddReceipt = (Button)findViewById(R.id.btnAddReceipt);
         btnAddReceipt.setOnClickListener(new addReceiptButton());

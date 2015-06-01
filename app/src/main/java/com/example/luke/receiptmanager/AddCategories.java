@@ -23,6 +23,9 @@ public class AddCategories extends Activity {
         Bundle extra = getIntent().getExtras();
         categories = extra.getStringArrayList("Categories");
 
+        if (categories == null)
+            categories = new ArrayList<String>();
+
         setupAddButton();
     }
 
