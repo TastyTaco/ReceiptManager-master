@@ -100,7 +100,7 @@ public class AddReceipt extends AppCompatActivity {
             String amountSpent = txtAmountSpent.getText().toString();
             String category = spnCategory.getSelectedItem().toString();
 
-            if (mPhotoFile != null && title != null && title != "" && amountSpent != null && amountSpent != "" && category != null){
+            if (mPhotoFile != null && !title.equals("null") && !title.isEmpty() && !amountSpent.equals("null")&& !amountSpent.isEmpty() && !category.equals("null") && !category.isEmpty()){
                 Intent intent = new Intent();
                 intent.putExtra("Title", title);
                 intent.putExtra("AmountSpent", amountSpent);
@@ -110,7 +110,7 @@ public class AddReceipt extends AppCompatActivity {
 
                 Bitmap userPhotoBitmap = BitmapFactory.decodeFile(realFilePath);
 
-                ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+                ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream()
                 userPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteOutputStream);
                 userPhotoBitmap.recycle();
                 byte[] byteArray = byteOutputStream.toByteArray();
@@ -120,6 +120,20 @@ public class AddReceipt extends AppCompatActivity {
 
                 setResult(RESULT_OK, intent);
                 finish();
+            }
+            else {
+                if(mPhotoFile == null){
+                    Toast.makeText(getApplicationContext(), "Please take a photo", Toast.LENGTH_SHORT).show();
+                }
+                else if(title.equals("null") || title.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "Please enter a title", Toast.LENGTH_SHORT).show();
+                }
+                else if(category.equals("null") || category.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Please choose a category", Toast.LENGTH_SHORT).show();
+                }
+                else if(amountSpent.equals("null") || amountSpent.isEmpty()){
+                    Toast.makeText(getApplicationContext(), "Please enter an amount", Toast.LENGTH_SHORT).show();
+                }
             }
 
         }
