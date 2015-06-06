@@ -93,6 +93,12 @@ public class ReceiptManager {
     }
 
     public void addReceipt(String title, String category, String photo, String amountSpent) {
+        //Add the category if it doesn't already exist, bit of a shortcut for being able to add a category from the add receipt page.
+        if (!categories.contains(category)){
+            categories.add(category);
+            firebaseWrapper.saveCategories(categories);
+        }
+
         Receipt receipt = new Receipt(maxId, title, category, photo, amountSpent);
 
         if (receipts == null)

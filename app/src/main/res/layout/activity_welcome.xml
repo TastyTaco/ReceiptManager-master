@@ -54,29 +54,4 @@
         android:layout_alignRight="@+id/textView6"
         android:layout_alignEnd="@+id/textView6" />
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="If you do not wish to have your receipts uploaded to the cloud, please continue without registering."
-        android:id="@+id/textView8"
-        android:layout_marginTop="45dp"
-        android:textColor="#ffffff"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:layout_below="@+id/btnWelcomeRegister"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Continue"
-        android:id="@+id/btnContinue"
-        android:layout_marginTop="59dp"
-        android:background="#8BC34A"
-        android:textColor="#ffffff"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
-        android:layout_below="@+id/textView8"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>

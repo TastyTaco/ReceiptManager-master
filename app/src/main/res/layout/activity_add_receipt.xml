@@ -24,10 +24,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose Receipt Image"
         android:id="@+id/btnChooseImage"
         android:layout_gravity="center_horizontal"
-        android:background="#8BC34A"
+        android:background="@android:drawable/ic_menu_camera"
         android:textColor="#ffffff"
         android:paddingLeft="15dp"
         android:paddingRight="15dp" />
@@ -67,11 +66,18 @@
             android:layout_marginTop="8dp" />
 
         <Spinner
-            android:layout_width="match_parent"
+            android:layout_width="193dp"
             android:layout_height="47dp"
             android:id="@+id/spnCategory"
             android:layout_gravity="right"
             android:textColor="#ffffff"/>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnAddCategoryFromAddReceipt"
+            android:background="@mipmap/green_plus" />
     </LinearLayout>
 
     <LinearLayout
@@ -92,7 +98,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/txtAmountSpent"
             android:layout_gravity="right"
-            android:textColor="#212121" />
+            android:textColor="#212121"
+            android:inputType="numberDecimal" />
         </LinearLayout>
 
     <Button

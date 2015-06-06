@@ -31,15 +31,6 @@ public class WelcomeActivity extends Activity {
                 startActivity(intent);
             }
         });
-
-        Button btnContinue = (Button)findViewById(R.id.btnContinue);
-        btnContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(WelcomeActivity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     /*

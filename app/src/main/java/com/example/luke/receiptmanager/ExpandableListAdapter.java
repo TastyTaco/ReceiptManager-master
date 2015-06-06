@@ -47,9 +47,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         //get the textview for the category title
         TextView categoryTitle = (TextView)convertView.findViewById(R.id.txtCategoryTitle);
 
+        //Get the number of items in that category.
+        ArrayList<Receipt> tReceipts = listItems.get(category);
+        int itemCount = 0;
+
+        if (tReceipts != null)
+            itemCount = tReceipts.size();
+
         //set the textview to the title of the category
         if(categoryTitle != null) {
-            categoryTitle.setText(category);
+            categoryTitle.setText(category + " (" + itemCount + ")");
         }
 
         return convertView;
