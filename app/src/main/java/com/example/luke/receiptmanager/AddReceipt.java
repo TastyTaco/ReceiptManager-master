@@ -110,7 +110,7 @@ public class AddReceipt extends AppCompatActivity {
 
                 Bitmap userPhotoBitmap = BitmapFactory.decodeFile(realFilePath);
 
-                ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream()
+                ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
                 userPhotoBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteOutputStream);
                 userPhotoBitmap.recycle();
                 byte[] byteArray = byteOutputStream.toByteArray();

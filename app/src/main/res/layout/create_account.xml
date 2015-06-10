@@ -90,5 +90,13 @@
         android:layout_marginTop="28dp"
         android:textColor="#ffffff" />
 
+    <ProgressBar
+        android:id="@+id/spnrRegister"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtPassword"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>

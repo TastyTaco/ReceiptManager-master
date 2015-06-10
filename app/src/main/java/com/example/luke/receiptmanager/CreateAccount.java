@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,8 @@ import java.util.Map;
  * Created by luke on 5/23/2015.
  */
 public class CreateAccount extends Activity {
+
+    ProgressBar spinner;
 
     FirebaseWrapper firebaseWrapper;
     @Override
@@ -40,18 +43,24 @@ public class CreateAccount extends Activity {
                 CreateUser(emailAddress, password);
             }
         });
+
+        spinner = (ProgressBar)findViewById(R.id.spnrRegister);
+        spinner.setVisibility(View.GONE); //Hide spinner on load.
     }
 
     void CreateUser(String emailAddress, String password){
+        spinner.setVisibility(View.VISIBLE);
         CreateUserEvent createUserEvent = new CreateUserEvent();
         firebaseWrapper.createUser(emailAddress, password, createUserEvent);
     }
 
     class CreateUserEvent implements Firebase.ValueResultHandler<Map<String, Object>> {
+        ProgressBar spinner = (ProgressBar)findViewById(R.id.spnrRegister);
         public void onSuccess(Map<String, Object> result) {
             System.out.println("Successfully created user account with uid: " + result.get("uid"));
             firebaseWrapper.setUserId(result.get("uid").toString());
 
+            spinner.setVisibility(View.GONE);
             Intent intent = new Intent(CreateAccount.this, HomeActivity.class);
             startActivity(intent);
         }
@@ -59,6 +68,7 @@ public class CreateAccount extends Activity {
         @Override
         public void onError(FirebaseError firebaseError) {
             // there was an error
+            spinner.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(), "Invalid username or password", Toast.LENGTH_LONG).show();
         }
     }

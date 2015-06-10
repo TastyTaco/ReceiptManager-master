@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,6 +15,8 @@ import com.firebase.client.FirebaseError;
 
 
 public class LogOn extends Activity {
+
+    ProgressBar spinner;
 
     FirebaseWrapper firebaseWrapper;
     @Override
@@ -36,19 +39,28 @@ public class LogOn extends Activity {
                 LogOn(emailAddress, password);
             }
         });
+
+        spinner = (ProgressBar)findViewById(R.id.spnrLogon);
+        spinner.setVisibility(View.GONE); //Hide the spinner.
     }
 
 
     void LogOn(String emailAddress, String password){
+        spinner.setVisibility(View.VISIBLE);
+
         LoginEvent loginEvent = new LoginEvent();
         firebaseWrapper.authWithPassword(emailAddress, password, loginEvent);
     }
 
     class LoginEvent implements Firebase.AuthResultHandler {
+        ProgressBar spinner = (ProgressBar)findViewById(R.id.spnrLogon);
+
         @Override
         public void onAuthenticated(AuthData authData) {
             System.out.println("User ID: " + authData.getUid() + ", Provider: " + authData.getProvider());
             firebaseWrapper.setUserId(authData.getUid());
+
+            spinner.setVisibility(View.GONE);
 
             Intent intent = new Intent(LogOn.this, HomeActivity.class);
             startActivity(intent);
@@ -57,6 +69,7 @@ public class LogOn extends Activity {
         @Override
         public void onAuthenticationError(FirebaseError firebaseError) {
             // there was an error
+            spinner.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(), "Failed to Authenticate", Toast.LENGTH_LONG).show();
         }
     }
