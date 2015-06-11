@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'keystore'
+            keyPassword 'P@ssw0rd'
+            storeFile file('C:/Users/Logosta/SkyDrive/Documents/Android/ReceiptManager-master/keystore.jks')
+            storePassword 'P@ssw0rd'
+        }
+    }
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
-
     defaultConfig {
         applicationId "com.example.luke.receiptmanager"
         minSdkVersion 14
@@ -17,7 +24,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     //Firebase
     //if the build complains about multiple files, uncomment this.
     packagingOptions {
@@ -30,10 +36,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.1.1'
-
     //Firebase
     compile 'com.firebase:firebase-client-android:2.2.4+'
-
     //GSON Automatic Object to json converter.
     //https://github.com/google/gson
     //compile 'com.google.code.gson:gson:2.3.1'
