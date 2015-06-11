@@ -1,6 +1,5 @@
 package com.example.luke.receiptmanager;
 
-import android.app.Activity;
 import android.content.Context;
 
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ public class ReceiptManager {
 
     private FirebaseWrapper firebaseWrapper;
 
+    //hidden receipt manager.
     private static ReceiptManager receiptManager;
 
     private ReceiptManager( Context context, HomeActivity homeActivity) {
@@ -30,6 +30,7 @@ public class ReceiptManager {
         load();
     }
 
+    //Return singleton instance of receipt manager, or create a new one.
     public static ReceiptManager getInstance(Context context, HomeActivity homeActivity){
         if (receiptManager == null)
             receiptManager = new ReceiptManager(context, homeActivity);
@@ -42,10 +43,7 @@ public class ReceiptManager {
         return receiptManager;
     }
 
-    public ArrayList<Receipt> getReciepts() {
-        return receipts;
-    }
-
+    //Return the receipt manager's categories.
     public ArrayList<String> getCategories() {
         return categories;
     }
@@ -64,7 +62,7 @@ public class ReceiptManager {
             }
         }
 
-
+        //Refresh the expanding list view once the receipts have been loaded from firebase (asyncronously)
         homeActivity.setupExpandingListView();
     }
 
@@ -72,12 +70,14 @@ public class ReceiptManager {
     public void addCategories(ArrayList<String> categories) {
         if (categories == null) return;
         this.categories = categories;
+        //Refresh the expanding list view once the categories have been loaded from firebase (asyncronously)
         homeActivity.setupExpandingListView();
     }
 
     public ArrayList<Receipt> getReceipts(String category) {
         ArrayList<Receipt> categorisedReceipts = new ArrayList<Receipt>();
 
+        // return the receipts for a certain category type.
         for (Receipt receipt : receipts) {
             if (receipt.Category.equals(category)) {
                 categorisedReceipts.add(receipt);
@@ -87,6 +87,7 @@ public class ReceiptManager {
         return categorisedReceipts;
     }
 
+    //Load all data from firebase.
     private void load() {
         firebaseWrapper.loadReceipts(this);
         firebaseWrapper.loadCategories(this);
@@ -96,16 +97,20 @@ public class ReceiptManager {
         //Add the category if it doesn't already exist, bit of a shortcut for being able to add a category from the add receipt page.
         if (!categories.contains(category)){
             categories.add(category);
+            //Save the categories to firebase.
             firebaseWrapper.saveCategories(categories);
         }
 
+        //Create a new receipt.
         Receipt receipt = new Receipt(maxId, title, category, photo, amountSpent);
 
         if (receipts == null)
             receipts = new ArrayList<Receipt>();
 
         receipts.add(receipt);
+        //increment the ID, used for deleting.
         maxId++;
+        //Save the receipt to firebase.
         firebaseWrapper.saveReceipts(receipts);
     }
 
@@ -115,12 +120,14 @@ public class ReceiptManager {
 
         categories.add(category);
         Collections.sort(categories);
+        //Save the category to firebase.
         firebaseWrapper.saveCategories(categories);
     }
 
     public void deleteReceipt(int id) {
         if (receipts == null) return;
 
+        //Remove the receipt from the collection.
         for (int ii = 0; ii < receipts.size(); ii++) {
             if (receipts.get(ii).Id == id) {
                 receipts.remove(ii);
@@ -128,6 +135,7 @@ public class ReceiptManager {
             }
         }
 
+        //Save the updated receipts array to firebase.
         firebaseWrapper.saveReceipts(receipts);
     }
 

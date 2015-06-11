@@ -93,21 +93,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             receiptPrice.setText("$" + receipt.AmountSpent);
         }
 
+        //set the imageView for the receipt
         if(receiptImage != null){
             byte[] imageBytes = Base64.decode(receipt.Photo, 0);
             receiptImage.setImageBitmap(BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length));
         }
-        //set the imageView for the receipt
-        //receiptImage.setImageBitmap();
 
         Button deleteButton = (Button)convertView.findViewById(R.id.btnDelete);
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Get singleton instance of the receipt manager
                 ReceiptManager receiptManager = ReceiptManager.getInstance();
+
+                //Delete the selected receipt.
                 receiptManager.deleteReceipt(receipt.Id);
 
+                //Remove the deleted receipt from the expandable list.
                 ArrayList<Receipt> child = listItems.get(listCategories.get(groupPosition));
                 child.remove(childPosition);
                 notifyDataSetChanged();

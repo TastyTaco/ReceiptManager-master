@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,8 +18,6 @@ import java.util.Map;
 
 public class HomeActivity extends Activity {
 
-    List<String> groupList;
-    //List<String> childList;
     Map<String, ArrayList<Receipt>> receiptsCollection;
     ReceiptManager receiptManager;
 
@@ -29,45 +26,55 @@ public class HomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        setupAddReceiptActivity();
+
+        setupAddCategoriesActivity();
+
+
+        //Create an instance of receipt manager.
+        receiptManager = ReceiptManager.getInstance(getApplicationContext(), this);
+
+        setupExpandingListView();
+    }
+
+    void setupAddReceiptActivity() {
         Button btnReceiptView = (Button)findViewById(R.id.button);
         btnReceiptView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, AddReceipt.class);
+                //Pass the categories to the add Receipt activity.
                 intent.putExtra("Categories", receiptManager.getCategories());
 
                 startActivityForResult(intent, 0);
             }
         });
+    }
 
+    void setupAddCategoriesActivity() {
         Button btnAddCategory = (Button)findViewById(R.id.btnAddCategory);
         btnAddCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, AddCategories.class);
+                //Pass the categories to the add categories activity.
                 intent.putExtra("Categories", receiptManager.getCategories());
                 startActivityForResult(intent, 1);
             }
         });
-
-        receiptManager = ReceiptManager.getInstance(getApplicationContext(), this); //new ReceiptManager(getApplicationContext(), this);
-
-        setupExpandingListView();
-
-        FirebaseWrapper firebaseWrapper = FirebaseWrapper.getInstance(getApplicationContext());
-
     }
 
     void setupExpandingListView() {
-        groupList = receiptManager.getCategories();
+        //Get the categories to group the receipts by.
+        ArrayList<String> groupList = receiptManager.getCategories();
 
-        createCollection();
+        createCollection(groupList);
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int width = metrics.widthPixels;
 
-
+        //Create the expandable list view and provide it with receipts.
         ExpandableListView expListView = (ExpandableListView)findViewById(R.id.elvMainList);
         final ExpandableListAdapter listViewAdapter = new ExpandableListAdapter (this, groupList, receiptsCollection);
         expListView.setAdapter(listViewAdapter);
@@ -82,35 +89,10 @@ public class HomeActivity extends Activity {
         return (int) (pixels * scale + 0.5f);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    private void createCollection() {
+    private void createCollection(ArrayList<String> categories) {
         receiptsCollection = new LinkedHashMap<String, ArrayList<Receipt>>();
 
-        ArrayList<String> categories = new ArrayList<String>();
-        categories = receiptManager.getCategories();
-
+        //Group the receipts into the categories.
         for (String category : categories) {
             ArrayList<Receipt> categorisedReceipts = receiptManager.getReceipts(category);
             receiptsCollection.put(category, categorisedReceipts);
@@ -122,19 +104,25 @@ public class HomeActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) return;
         if (requestCode == 0) { //Add Receipt
+            //Grab the data from the Add Receipt Activity.
             Bundle extras = data.getExtras();
             String title = extras.getString("Title");
             String amountSpent = extras.getString("AmountSpent");
             String category = extras.getString("Category");
             String photo = extras.getString("Photo");
 
+            //Add the new receipt to the receipt manager.
             receiptManager.addReceipt(title,category, photo, amountSpent);
+            //Reload the receipt expandable list view.
             setupExpandingListView();
 
         } else if (requestCode == 1) { //Add Category
+            //Get the new category.
             String category = data.getStringExtra("Category");
             if (category != null && category != "") {
+                //Add the new category to the receipt view.
                 receiptManager.addCategory(category);
+                //Refresh the expanding list view.
                 setupExpandingListView();
             }
         }

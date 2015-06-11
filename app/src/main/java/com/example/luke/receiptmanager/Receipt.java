@@ -12,6 +12,7 @@ public class Receipt {
     String AmountSpent;
     String Photo; //Base64 encoded photo
 
+    //Create a receipt.
     public Receipt(int Id, String Title, String Category, String Photo, String AmountSpent) {
         this.Id = Id;
         this.Title = Title;
@@ -20,6 +21,7 @@ public class Receipt {
         this.AmountSpent = AmountSpent;
     }
 
+    //Create a receipt from the firebase hashmap.
     public Receipt(int Id, HashMap<String, String> values) {
         this.Id = Id;
 
@@ -29,6 +31,7 @@ public class Receipt {
         this.AmountSpent = values.get("amountSpent");
     }
 
+    //Save the receipt to the firebase hasmap.
     public HashMap<String, String> save() {
         HashMap<String, String> mapping = new HashMap<String, String>();
         mapping.put("title", Title);

@@ -14,46 +14,33 @@ public class WelcomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        setupLoginButton();
+
+        setupRegisterButton();
+    }
+
+    void setupLoginButton() {
         Button btnLogIn = (Button)findViewById(R.id.btnWelcomeLogIn);
         btnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //launch the logon intent.
                 Intent intent = new Intent(WelcomeActivity.this, LogOn.class);
                 startActivity(intent);
             }
         });
+    }
 
+    void setupRegisterButton() {
         Button btnRegister = (Button)findViewById(R.id.btnWelcomeRegister);
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Launch the register intent.
                 Intent intent = new Intent(WelcomeActivity.this, CreateAccount.class);
                 startActivity(intent);
             }
         });
     }
 
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.welcome, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    */
 }
